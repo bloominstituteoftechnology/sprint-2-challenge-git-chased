@@ -73,22 +73,63 @@
     // ❗ Debug properly using the Console
 
     // 👉 CHALLENGE 1
-    function profileActivation() {
+    function profileActivation(profile, reason) {
+      
+      if (profile.active === undefined){
+        return "impossible to ascertain status"
+      } else if (profile.active && !reason){
+        return "confirm status manually"
+      
+      } else if (profile.active && profile.reason){
+         return "confirm status manually"
+      
+      } 
+      else if (!profile.active && !profile.reason){
+        return "confirm status manually"
+      } else if (!profile.active && profile.reason !== undefined){
+          profile.active = true;
+          return {'active' : profile.active}
+        } else {
+          profile.active = false;
+        
+        return {'active': profile.active, 'reason': reason};
+        }
+        //
+          
       // 🧠 profileActivation takes two arguments, profile and reason, which are an object and a string respectively
       //  The reason arg is only used -and therefore required- to deactivate profiles, not to activate them
       //  The profile arg has an `active` property holding a Boolean value
       //    * If profile is active, profileActivation deactivates it and writes a `reason` prop holding the reason
       //    * If profile is inactive, profileActivation activates it and deletes the `reason` prop from the object
       //    * In both cases the updated profile object is returned
-      // 🧠 Edge cases:
+      // 🧠 Edge cases:reason
       //    * If the profile is inactive but its `reason` prop is **missing**, return the string "confirm status manually"
-      //    * If the profile is active but it has a `reason` prop, return the string "confirm status manually"
+      //    * If the profile is active but it has a `` prop, return the string "confirm status manually"
       //    * If the profile is **missing** an `active` prop, return the string "impossible to ascertain status"
       // 🌟 HINT: to confirm the existence of a prop, check that its value is not undefined
-    }
+    } 
 
     // 👉 CHALLENGE 2
-    function mineSweeper() {
+    function mineSweeper(grid, x, y) {
+      
+      
+
+      if (x < 1 || y < 1 || x > 3 || y > 3){
+        return "invalid coordinates"
+      } 
+      for (let a1 = y - 1; a1 < grid.length; a1++){
+        for (let a2 = x - 1; a2 < grid[a1].length; a2++)
+        if (grid[a1][a2] === "🟦"){
+            return "🟦 🥳"
+          }
+          else if (grid[a1][a2] === "🟥"){
+            return "🟥 💀"
+          }
+        }
+      
+      
+
+
       // 🧠 mineSweeper takes a grid as its first argument, and coordinates x and y as the second and third args
       //  The grid is an array of arrays in the following format: [["🟥","🟦","🟥"],["🟦","🟥","🟥"],["🟥","🟦","🟦"]]
       //  Each subarray is a row of the grid, the first subarray being the top row:
@@ -110,7 +151,27 @@
     }
 
     // 👉 CHALLENGE 3
-    function booleanize() {
+    function booleanize(obj) {
+      let result = {};
+      
+      for (let i in obj){
+      if (i.length > 9){
+        return "shorten all prop names to 9 chars or less"
+      } if (obj[i] === 0){
+        result[i] = false;
+        
+      } else if (obj[i] === 1){
+        result[i] = true;
+        
+      } else if (obj[i] === null){
+        delete result[i];
+        
+      } else {
+        result[i] = obj[i]
+      }
+      
+     
+    } return result
       // 🧠 booleanize takes an object as its single argument, which can have any number of properties
       // Loop over the properties and then return the object, after applying the following transformations:
       //    * If a value is the number zero, it must be transformed into the Boolean false
@@ -122,7 +183,23 @@
     }
 
     // 👉 CHALLENGE 4
-    function scrub() {
+    function scrub(text, forbidden) {
+      let words = text.split(' ')
+      
+      for (let i = 0; i < words.length; i++){
+        for (let j in forbidden){
+        if (words[i] === forbidden[j]){
+          let letters = words[i].split('')
+          for (let l = 0; l < letters.length; l++){
+          letters[l] = 'x'
+        } words[i] = letters.join('') }
+
+        }
+      } return words.join(' ')
+
+
+       //text.indexof(forbidden)
+
       // 🧠 scrub takes a string "text" as its first argument, and an array of forbidden words "forbidden" as its second
       // Any word in the text included in the array of forbidden words is replaced with a word of equal length but made of lowcase "x"
       // The scrubbed text is then returned from the function, as seen in the examples below
@@ -137,7 +214,21 @@
     }
 
     // 👉 CHALLENGE 5
-    function normalizePhoneNumber() {
+    function normalizePhoneNumber(str) {
+      
+      let split = str.split('')
+      let first = split.slice(0,3).join('');
+      let second = split.slice(3, 6).join('');
+          let third = split.slice(6, 10).join('');
+      if (split.length > 10 || split.length < 10){
+        return "type a 10-digit number"}
+        for (let i = 0; i < split.length; i++){
+
+          if (split[i] !== '0' && split[i] !== '1' && split[i] !== '2' && split[i] !== '3' && split[i] !== '4' && split[i] !== '5' && split[i] !== '6' && split[i] !== '7' && split[i] !== '8' && split[i] !== '9'){
+        return "invalid phone number"
+      } 
+   
+      } return `(${first}) ${second}-${third}`
       // 🧠 normalizePhoneNumber takes a string as its only argument, representing a ten-digit number
       // The function returns a string formatted as seen below
       // 🧠 Examples of usage:
@@ -170,6 +261,7 @@
     globalThis.booleanize = booleanize
     globalThis.scrub = scrub
     globalThis.normalizePhoneNumber = normalizePhoneNumber
+    
 
     try {
       runTests('CHALLENGE 1 - profileActivation', profileActivation, [
